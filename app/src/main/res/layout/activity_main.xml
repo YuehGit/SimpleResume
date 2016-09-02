@@ -36,7 +36,8 @@
                 <ImageButton
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="@android:color/holo_red_dark"
+                    android:src="@drawable/ic_edit_black_18dp"
+                    android:background="?attr/selectableItemBackground"
                     android:layout_marginLeft="8dp"
                     android:layout_gravity="center_vertical"/>
 
@@ -55,7 +56,8 @@
                 android:id="@+id/portrait"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@android:color/black"
+                android:src="@drawable/johndoe"
+                android:background="?attr/selectableItemBackground"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
@@ -77,8 +79,9 @@
             <ImageButton
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_blue_bright"/>
+                android:src="@drawable/ic_add_black_18dp"
+                android:background="?attr/selectableItemBackground"
+                android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 
@@ -97,7 +100,8 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_purple"/>
+                android:src="@drawable/ic_edit_black_18dp"
+                android:background="?attr/selectableItemBackground"/>
 
         </LinearLayout>
 
@@ -106,140 +110,7 @@
             android:layout_height="wrap_content"
             android:text="course1\ncourse2\ncourse3"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="23sp"
-                android:textAllCaps="true"
-                android:text="Education"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_blue_bright"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="UCSD (09/2015 ~ 09/2017)"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_purple"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="course1\ncourse2\ncourse3"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="23sp"
-                android:textAllCaps="true"
-                android:text="Education"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_blue_bright"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="UCSD (09/2015 ~ 09/2017)"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_purple"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="course1\ncourse2\ncourse3"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="23sp"
-                android:textAllCaps="true"
-                android:text="Education"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_blue_bright"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="UCSD (09/2015 ~ 09/2017)"/>
-
-            <ImageButton
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/holo_purple"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="course1\ncourse2\ncourse3"/>
 
     </LinearLayout>
 
