@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">SimpleResume</string>
-    <string name="education">Education</string>
-    <string name="experience">Experience</string>
-    <string name="projects">Projects</string>
+
+    <string name="section_education">Education</string>
+    <string name="section_experience">Experience</string>
+    <string name="section_projects">Projects</string>
+
+    <string name="edit_education">Edit education</string>
+    <string name="edit_experience">Edit experience</string>
+    <string name="edit_projects">Edit projects</string>
+
+    <string name="add_education">Add education</string>
+    <string name="add_experience">Add experience</string>
+    <string name="add_projects">Add projects</string>
 </resources>
