@@ -12,4 +12,6 @@
     <string name="add_education">Add education</string>
     <string name="add_experience">Add experience</string>
     <string name="add_projects">Add projects</string>
+    <string name="save">save</string>
+    <string name="delete">Delete</string>
 </resources>
