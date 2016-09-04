@@ -1,5 +1,6 @@
 package com.yue.simpleresume;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int REQ_CODE_EDUCATION_EDIT = 100;
+    public static final int REQ_CODE_EXPERIENCE_EDIT = 101;
+    public static final int REQ_CODE_PROJECT_EDIT = 102;
+
     private BasicInfo basicInfo;
     private List<Education> educations;
     private List<Experience> experiences;
@@ -27,13 +32,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fakeData();
+        setupUI();
+    }
+
+    private void setupUI() {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.add_education_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EducationEditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_EDUCATION_EDIT);
             }
         });
 
@@ -41,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ExperienceEditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_EXPERIENCE_EDIT);
             }
         });
 
@@ -49,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ProjectEditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_PROJECT_EDIT);
             }
         });
 
@@ -61,6 +72,28 @@ public class MainActivity extends AppCompatActivity {
         setupProjects();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_CODE_EDUCATION_EDIT && resultCode == Activity.RESULT_OK) {
+            Education education = data.getParcelableExtra(EducationEditActivity.KEY_EDUCATION);
+            educations.add(education);
+            setupEducations();
+        }
+
+        if (requestCode == REQ_CODE_EXPERIENCE_EDIT && resultCode == Activity.RESULT_OK) {
+            Experience experience = data.getParcelableExtra(ExperienceEditActivity.KEY_EXPERIENCE);
+            experiences.add(experience);
+            setupExperiences();
+        }
+
+        if (requestCode == REQ_CODE_PROJECT_EDIT && resultCode == Activity.RESULT_OK) {
+            Project project = data.getParcelableExtra(ProjectEditActivity.KEY_PROJECT);
+            projects.add(project);
+            setupProjects();
+        }
+    }
+
     private void setupBasicInfo() {
         ((TextView) findViewById(R.id.info_name)).setText(basicInfo.name);
         ((TextView) findViewById(R.id.info_email)).setText(basicInfo.email);
@@ -68,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupEducations() {
         LinearLayout educationsLayout = (LinearLayout) findViewById(R.id.educations);
+        educationsLayout.removeAllViews();
         for (Education education : educations) {
             View view = getEducationView(education);
             educationsLayout.addView(view);
@@ -89,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupExperiences() {
         LinearLayout experiencesLayout = (LinearLayout) findViewById(R.id.experiences);
+        experiencesLayout.removeAllViews();
         for (Experience experience : experiences) {
             View view = getExperienceView(experience);
             experiencesLayout.addView(view);
@@ -111,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupProjects() {
         LinearLayout projectsLayout = (LinearLayout) findViewById(R.id.projects);
+        projectsLayout.removeAllViews();
         for (Project project : projects) {
             View view = getProjectView(project);
             projectsLayout.addView(view);
@@ -170,9 +206,9 @@ public class MainActivity extends AppCompatActivity {
         experience1.endDate = DateUtils.stringToDate("06/2015");
 
         experience1.details = new ArrayList<>();
-        experience1.details.add("Built something useing some tech");
-        experience1.details.add("Built something useing some tech");
-        experience1.details.add("Built something useing some tech");
+        experience1.details.add("Built something using some tech");
+        experience1.details.add("Built something using some tech");
+        experience1.details.add("Built something using some tech");
 
         Experience experience2 = new Experience();
         experience2.company = "Facebook";
@@ -181,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
         experience2.endDate = DateUtils.stringToDate("09/2016");
 
         experience2.details = new ArrayList<>();
-        experience2.details.add("Built something useing some tech");
-        experience2.details.add("Built something useing some tech");
-        experience2.details.add("Built something useing some tech");
+        experience2.details.add("Built something using some tech");
+        experience2.details.add("Built something using some tech");
+        experience2.details.add("Built something using some tech");
 
         experiences = new ArrayList<>();
         experiences.add(experience1);

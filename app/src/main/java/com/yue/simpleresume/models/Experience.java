@@ -1,9 +1,12 @@
 package com.yue.simpleresume.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.List;
 
-public class Experience {
+public class Experience implements Parcelable{
 
     public String company;
 
@@ -14,4 +17,42 @@ public class Experience {
     public Date endDate;
 
     public List<String> details;
+
+    public Experience() {
+
+    }
+
+    protected Experience(Parcel in) {
+        company = in.readString();
+        title = in.readString();
+        startDate = new Date(in.readLong());
+        endDate = new Date(in.readLong());
+        details = in.createStringArrayList();
+    }
+
+    public static final Creator<Experience> CREATOR = new Creator<Experience>() {
+        @Override
+        public Experience createFromParcel(Parcel in) {
+            return new Experience(in);
+        }
+
+        @Override
+        public Experience[] newArray(int size) {
+            return new Experience[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(company);
+        dest.writeString(title);
+        dest.writeLong(startDate.getTime());
+        dest.writeLong(endDate.getTime());
+        dest.writeStringList(details);
+    }
 }

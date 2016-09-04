@@ -34,6 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_small"
-        android:text="- course1\n- course2\n- course3"/>
+        tools:text="- course1\n- course2\n- course3"/>
 
 </LinearLayout>
