@@ -20,6 +20,8 @@ public class ProjectEditActivity extends AppCompatActivity {
 
     public static final String KEY_PROJECT = "project";
 
+    private Project project;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,14 @@ public class ProjectEditActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        project = getIntent().getParcelableExtra(KEY_PROJECT);
 
+        if (project != null) {
+            ((EditText) findViewById(R.id.project_edit_name)).setText(project.name);
+            ((EditText) findViewById(R.id.project_edit_start_date)).setText(DateUtils.dateToString(project.startDate));
+            ((EditText) findViewById(R.id.project_edit_end_date)).setText(DateUtils.dateToString(project.endDate));
+            ((EditText) findViewById(R.id.project_edit_details)).setText(MainActivity.formatEditItems(project.details));
+        }
     }
 
     @Override
@@ -50,7 +59,9 @@ public class ProjectEditActivity extends AppCompatActivity {
     }
 
     private void saveAndExit() {
-        Project project = new Project();
+        if (project == null) {
+            project = new Project();
+        }
         project.name = (((EditText) findViewById(R.id.project_edit_name)).getText()).toString();
         project.startDate = DateUtils.stringToDate((((EditText) findViewById(R.id.project_edit_start_date)).getText()).toString());
         project.endDate = DateUtils.stringToDate((((EditText) findViewById(R.id.project_edit_end_date)).getText()).toString());

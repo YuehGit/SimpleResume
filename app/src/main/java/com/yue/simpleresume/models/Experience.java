@@ -5,8 +5,11 @@ import android.os.Parcelable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class Experience implements Parcelable{
+
+    public String id;
 
     public String company;
 
@@ -19,10 +22,11 @@ public class Experience implements Parcelable{
     public List<String> details;
 
     public Experience() {
-
+        id = UUID.randomUUID().toString();
     }
 
     protected Experience(Parcel in) {
+        id = in.readString();
         company = in.readString();
         title = in.readString();
         startDate = new Date(in.readLong());
@@ -49,6 +53,7 @@ public class Experience implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(company);
         dest.writeString(title);
         dest.writeLong(startDate.getTime());

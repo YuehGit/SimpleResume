@@ -19,12 +19,25 @@ public class ExperienceEditActivity extends AppCompatActivity {
 
     public static final String KEY_EXPERIENCE = "experience";
 
+    private Experience experience;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.experience_edit_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        experience = getIntent().getParcelableExtra(KEY_EXPERIENCE);
+
+        if (experience != null) {
+            ((EditText) findViewById(R.id.experience_edit_company)).setText(experience.company);
+            ((EditText) findViewById(R.id.experience_edit_title)).setText(experience.title);
+            ((EditText) findViewById(R.id.experience_edit_start_date)).setText(DateUtils.dateToString(experience.startDate));
+            ((EditText) findViewById(R.id.experience_edit_end_date)).setText(DateUtils.dateToString(experience.endDate));
+            ((EditText) findViewById(R.id.experience_edit_details)).setText(MainActivity.formatEditItems(experience.details));
+
+        }
 
 
     }
@@ -49,8 +62,10 @@ public class ExperienceEditActivity extends AppCompatActivity {
     }
 
     private void saveAndExit() {
+        if (experience == null) {
+            experience = new Experience();
 
-        Experience experience = new Experience();
+        }
         experience.company = (((EditText) findViewById(R.id.experience_edit_company)).getText()).toString();
         experience.title = (((EditText) findViewById(R.id.experience_edit_title)).getText()).toString();
         experience.startDate = (DateUtils.stringToDate(((EditText) findViewById(R.id.experience_edit_start_date)).getText().toString()));

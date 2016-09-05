@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,21 +78,68 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE_EDUCATION_EDIT && resultCode == Activity.RESULT_OK) {
             Education education = data.getParcelableExtra(EducationEditActivity.KEY_EDUCATION);
-            educations.add(education);
-            setupEducations();
+            updateEducation(education);
         }
 
         if (requestCode == REQ_CODE_EXPERIENCE_EDIT && resultCode == Activity.RESULT_OK) {
             Experience experience = data.getParcelableExtra(ExperienceEditActivity.KEY_EXPERIENCE);
-            experiences.add(experience);
-            setupExperiences();
+            updateExperience(experience);
         }
 
         if (requestCode == REQ_CODE_PROJECT_EDIT && resultCode == Activity.RESULT_OK) {
             Project project = data.getParcelableExtra(ProjectEditActivity.KEY_PROJECT);
-            projects.add(project);
-            setupProjects();
+            updateProject(project);
         }
+    }
+
+    private void updateProject(Project p) {
+        boolean found = false;
+        for (int i = 0; i < projects.size(); i++) {
+            Project project = projects.get(i);
+            if (TextUtils.equals(project.id, p.id)) {
+                projects.set(i, p);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            projects.add(p);
+        }
+        setupProjects();
+    }
+
+    private void updateExperience(Experience e) {
+        boolean found = false;
+        for (int i = 0; i < experiences.size(); i++) {
+            Experience experience = experiences.get(i);
+            if (TextUtils.equals(experience.id, e.id)) {
+                experiences.set(i, e);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            experiences.add(e);
+        }
+        setupExperiences();
+    }
+
+    private void updateEducation(Education e) {
+        boolean found = false;
+        for (int i = 0; i < educations.size(); i++) {
+            Education education = educations.get(i);
+            if (TextUtils.equals(education.id, e.id)) {
+                educations.set(i, e);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            educations.add(e);
+        }
+        setupEducations();
     }
 
     private void setupBasicInfo() {
@@ -108,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private View getEducationView(Education education) {
+    private View getEducationView(final Education education) {
         View view = getLayoutInflater().inflate(R.layout.education_item, null);
 
         String dateString = DateUtils.dateToString(education.startDate) + " ~ "
@@ -117,6 +165,15 @@ public class MainActivity extends AppCompatActivity {
                 + " - " + education.major + " - " + "(" + dateString + ")");
         ((TextView) view.findViewById(R.id.education_courses))
                 .setText(formatItems(education.courses));
+
+        view.findViewById(R.id.edit_education_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EducationEditActivity.class);
+                intent.putExtra(EducationEditActivity.KEY_EDUCATION, education);
+                startActivityForResult(intent, REQ_CODE_EDUCATION_EDIT);
+            }
+        });
 
         return view;
     }
@@ -130,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private View getExperienceView(Experience experience) {
+    private View getExperienceView(final Experience experience) {
         View view = getLayoutInflater().inflate(R.layout.experience_item, null);
 
         String dateString = DateUtils.dateToString(experience.startDate) + " ~ "
@@ -139,6 +196,15 @@ public class MainActivity extends AppCompatActivity {
                 + " - " + experience.title + " - " + "(" + dateString + ")");
         ((TextView) view.findViewById(R.id.experience_details))
                 .setText(formatItems(experience.details));
+
+        view.findViewById(R.id.edit_experience_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ExperienceEditActivity.class);
+                intent.putExtra(ExperienceEditActivity.KEY_EXPERIENCE, experience);
+                startActivityForResult(intent, REQ_CODE_EXPERIENCE_EDIT);
+            }
+        });
 
         return view;
     }
@@ -153,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private View getProjectView(Project project) {
+    private View getProjectView(final Project project) {
         View view = getLayoutInflater().inflate(R.layout.project_item, null);
 
         String dateString = DateUtils.dateToString(project.startDate) + " ~ "
@@ -162,6 +228,15 @@ public class MainActivity extends AppCompatActivity {
                 + " - "  + "(" + dateString + ")");
         ((TextView) view.findViewById(R.id.project_details))
                 .setText(formatItems(project.details));
+
+        view.findViewById(R.id.edit_project_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProjectEditActivity.class);
+                intent.putExtra(ProjectEditActivity.KEY_PROJECT, project);
+                startActivityForResult(intent, REQ_CODE_PROJECT_EDIT);
+            }
+        });
 
         return view;
     }
@@ -250,7 +325,8 @@ public class MainActivity extends AppCompatActivity {
         projects.add(project2);
     }
 
-    private String formatItems(List<String> items) {
+    public static String formatItems(List<String> items) {
+
         StringBuilder sb = new StringBuilder();
         for (String item : items) {
             sb.append(' ').append('-').append(' ').append(item).append('\n');
@@ -261,4 +337,18 @@ public class MainActivity extends AppCompatActivity {
 
         return sb.toString();
     }
+
+    public static String formatEditItems(List<String> items) {
+
+        StringBuilder sb = new StringBuilder();
+        for (String item : items) {
+            sb.append(item).append('\n');
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        return sb.toString();
+    }
+
 }
