@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.yue.simpleresume.models.BasicInfo;
 import com.yue.simpleresume.models.Education;
 import com.yue.simpleresume.models.Experience;
 import com.yue.simpleresume.models.Project;
 import com.yue.simpleresume.utils.DateUtils;
+import com.yue.simpleresume.utils.ModelUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQ_CODE_EDUCATION_EDIT = 100;
     public static final int REQ_CODE_EXPERIENCE_EDIT = 101;
     public static final int REQ_CODE_PROJECT_EDIT = 102;
+
+    private static final String MODEL_EDUCATIONS = "educations";
+    private static final String MODEL_EXPERIENCES = "experience";
+    private static final String MODEL_PROJECTS = "projects";
 
     private BasicInfo basicInfo;
     private List<Education> educations;
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         fakeData();
+        loadData();
 
         setupBasicInfo();
         setupEducations();
@@ -105,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         if (!found) {
             projects.add(p);
         }
+        ModelUtils.save(this, MODEL_PROJECTS, projects);
         setupProjects();
     }
 
@@ -122,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         if (!found) {
             experiences.add(e);
         }
+        ModelUtils.save(this, MODEL_EXPERIENCES, experiences);
         setupExperiences();
     }
 
@@ -139,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         if (!found) {
             educations.add(e);
         }
+        ModelUtils.save(this, MODEL_EDUCATIONS, educations);
         setupEducations();
     }
 
@@ -246,83 +256,83 @@ public class MainActivity extends AppCompatActivity {
         basicInfo.name = "John Doe";
         basicInfo.email = "Doe.John@gmail.com";
 
-        Education education1 = new Education();
-        education1.school = "UCSD";
-        education1.major = "Electrical Engineering";
-        education1.startDate = DateUtils.stringToDate("09/2011");
-        education1.endDate = DateUtils.stringToDate("09/2012");
-
-        education1.courses = new ArrayList<>();
-        education1.courses.add("Wireless Network");
-        education1.courses.add("Communication Theory");
-        education1.courses.add("Mobile Security");
-        education1.courses.add("Signal Processing");
-
-        Education education2 = new Education();
-        education2.school = "UCLA";
-        education2.major = "Computer Science";
-        education2.startDate = DateUtils.stringToDate("01/2013");
-        education2.endDate = DateUtils.stringToDate("09/2014");
-
-        education2.courses = new ArrayList<>();
-        education2.courses.add("Database");
-        education2.courses.add("Algorithm");
-        education2.courses.add("OO Design");
-        education2.courses.add("Operating System");
-
-        educations = new ArrayList<>();
-        educations.add(education1);
-        educations.add(education2);
-
-        Experience experience1 = new Experience();
-        experience1.company = "Google";
-        experience1.title = "Software Engineer";
-        experience1.startDate = DateUtils.stringToDate("11/2014");
-        experience1.endDate = DateUtils.stringToDate("06/2015");
-
-        experience1.details = new ArrayList<>();
-        experience1.details.add("Built something using some tech");
-        experience1.details.add("Built something using some tech");
-        experience1.details.add("Built something using some tech");
-
-        Experience experience2 = new Experience();
-        experience2.company = "Facebook";
-        experience2.title = "Software Engineer";
-        experience2.startDate = DateUtils.stringToDate("08/2015");
-        experience2.endDate = DateUtils.stringToDate("09/2016");
-
-        experience2.details = new ArrayList<>();
-        experience2.details.add("Built something using some tech");
-        experience2.details.add("Built something using some tech");
-        experience2.details.add("Built something using some tech");
-
-        experiences = new ArrayList<>();
-        experiences.add(experience1);
-        experiences.add(experience2);
-
-        Project project1 = new Project();
-        project1.name = "SimpleResume";
-        project1.startDate = DateUtils.stringToDate("12/2014");
-        project1.endDate = DateUtils.stringToDate("01/2015");
-
-        project1.details = new ArrayList<>();
-        project1.details.add("Complete something using some tech");
-        project1.details.add("Complete something using some tech");
-        project1.details.add("Complete something using some tech");
-
-        Project project2 = new Project();
-        project2.name = "SimpleTodo";
-        project2.startDate = DateUtils.stringToDate("06/2015");
-        project2.endDate = DateUtils.stringToDate("09/2015");
-
-        project2.details = new ArrayList<>();
-        project2.details.add("Complete something using some tech");
-        project2.details.add("Complete something using some tech");
-        project2.details.add("Complete something using some tech");
-
-        projects = new ArrayList<>();
-        projects.add(project1);
-        projects.add(project2);
+//        Education education1 = new Education();
+//        education1.school = "UCSD";
+//        education1.major = "Electrical Engineering";
+//        education1.startDate = DateUtils.stringToDate("09/2011");
+//        education1.endDate = DateUtils.stringToDate("09/2012");
+//
+//        education1.courses = new ArrayList<>();
+//        education1.courses.add("Wireless Network");
+//        education1.courses.add("Communication Theory");
+//        education1.courses.add("Mobile Security");
+//        education1.courses.add("Signal Processing");
+//
+//        Education education2 = new Education();
+//        education2.school = "UCLA";
+//        education2.major = "Computer Science";
+//        education2.startDate = DateUtils.stringToDate("01/2013");
+//        education2.endDate = DateUtils.stringToDate("09/2014");
+//
+//        education2.courses = new ArrayList<>();
+//        education2.courses.add("Database");
+//        education2.courses.add("Algorithm");
+//        education2.courses.add("OO Design");
+//        education2.courses.add("Operating System");
+//
+//        educations = new ArrayList<>();
+//        educations.add(education1);
+//        educations.add(education2);
+//
+//        Experience experience1 = new Experience();
+//        experience1.company = "Google";
+//        experience1.title = "Software Engineer";
+//        experience1.startDate = DateUtils.stringToDate("11/2014");
+//        experience1.endDate = DateUtils.stringToDate("06/2015");
+//
+//        experience1.details = new ArrayList<>();
+//        experience1.details.add("Built something using some tech");
+//        experience1.details.add("Built something using some tech");
+//        experience1.details.add("Built something using some tech");
+//
+//        Experience experience2 = new Experience();
+//        experience2.company = "Facebook";
+//        experience2.title = "Software Engineer";
+//        experience2.startDate = DateUtils.stringToDate("08/2015");
+//        experience2.endDate = DateUtils.stringToDate("09/2016");
+//
+//        experience2.details = new ArrayList<>();
+//        experience2.details.add("Built something using some tech");
+//        experience2.details.add("Built something using some tech");
+//        experience2.details.add("Built something using some tech");
+//
+//        experiences = new ArrayList<>();
+//        experiences.add(experience1);
+//        experiences.add(experience2);
+//
+//        Project project1 = new Project();
+//        project1.name = "SimpleResume";
+//        project1.startDate = DateUtils.stringToDate("12/2014");
+//        project1.endDate = DateUtils.stringToDate("01/2015");
+//
+//        project1.details = new ArrayList<>();
+//        project1.details.add("Complete something using some tech");
+//        project1.details.add("Complete something using some tech");
+//        project1.details.add("Complete something using some tech");
+//
+//        Project project2 = new Project();
+//        project2.name = "SimpleTodo";
+//        project2.startDate = DateUtils.stringToDate("06/2015");
+//        project2.endDate = DateUtils.stringToDate("09/2015");
+//
+//        project2.details = new ArrayList<>();
+//        project2.details.add("Complete something using some tech");
+//        project2.details.add("Complete something using some tech");
+//        project2.details.add("Complete something using some tech");
+//
+//        projects = new ArrayList<>();
+//        projects.add(project1);
+//        projects.add(project2);
     }
 
     public static String formatItems(List<String> items) {
@@ -349,6 +359,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return sb.toString();
+    }
+
+    private void loadData() {
+        List<Education> savedEducation = ModelUtils.read (this,
+                                                         MODEL_EDUCATIONS,
+                                                         new TypeToken<List<Education>>(){});
+        educations = savedEducation == null ? new ArrayList<Education>() : savedEducation;
+
+        List<Experience> savedExperience = ModelUtils.read (this,
+                                                            MODEL_EXPERIENCES,
+                                                            new TypeToken<List<Experience>>(){});
+        experiences = savedExperience == null ? new ArrayList<Experience>() : savedExperience;
+
+        List<Project> savedProject = ModelUtils.read (this,
+                                                      MODEL_PROJECTS,
+                                                      new TypeToken<List<Project>>(){});
+        projects = savedProject == null ? new ArrayList<Project>() : savedProject;
+
+
     }
 
 }
