@@ -8,17 +8,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.yue.simpleresume.models.Education;
 import com.yue.simpleresume.utils.DateUtils;
 
 import java.util.Arrays;
-import java.util.List;
 
+
+@SuppressWarnings("ConstantConditions")
 public class EducationEditActivity extends AppCompatActivity {
 
     public static final String KEY_EDUCATION = "education";
+
+    public static final String KEY_EDUCATION_ID = "education_id";
 
     private Education education;
 
@@ -31,12 +35,26 @@ public class EducationEditActivity extends AppCompatActivity {
 
         education = getIntent().getParcelableExtra(KEY_EDUCATION);
 
-        if (education != null) {
+        if (education == null) {
+            findViewById(R.id.education_edit_delete).setVisibility(View.GONE);
+        } else {
             ((EditText) findViewById(R.id.education_edit_school)).setText(education.school);
             ((EditText) findViewById(R.id.education_edit_major)).setText(education.major);
             ((EditText) findViewById(R.id.education_edit_start_date)).setText(DateUtils.dateToString(education.startDate));
             ((EditText) findViewById(R.id.education_edit_end_date)).setText(DateUtils.dateToString(education.endDate));
             ((EditText) findViewById(R.id.education_edit_courses)).setText(MainActivity.formatEditItems(education.courses));
+
+            findViewById(R.id.education_edit_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(KEY_EDUCATION_ID, education.id);
+                    setResult(Activity.RESULT_OK, resultIntent);
+
+                    finish();
+                }
+            });
         }
 
 
@@ -62,6 +80,7 @@ public class EducationEditActivity extends AppCompatActivity {
     }
 
     private void saveAndExit() {
+        // create operation
         if (education == null) {
             education = new Education();
         }

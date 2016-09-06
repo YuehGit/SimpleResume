@@ -40,10 +40,13 @@
         android:layout_height="wrap_content"
         android:hint="Details"/>
 
-    <Button
+    <TextView
+        android:id="@+id/project_edit_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/delete"/>
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/delete"
+        style="@style/DeleteButton"/>
 
 </LinearLayout>

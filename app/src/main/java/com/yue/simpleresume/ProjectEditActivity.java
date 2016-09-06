@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.yue.simpleresume.models.Project;
@@ -15,12 +16,15 @@ import com.yue.simpleresume.utils.DateUtils;
 
 import java.util.Arrays;
 import java.util.Date;
-
+@SuppressWarnings("ConstantConditions")
 public class ProjectEditActivity extends AppCompatActivity {
 
     public static final String KEY_PROJECT = "project";
 
+    public static final String KEY_PROJECT_ID = "project_id";
+
     private Project project;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,11 +35,24 @@ public class ProjectEditActivity extends AppCompatActivity {
 
         project = getIntent().getParcelableExtra(KEY_PROJECT);
 
-        if (project != null) {
+        if (project == null) {
+            findViewById(R.id.project_edit_delete).setVisibility(View.GONE);
+        } else {
             ((EditText) findViewById(R.id.project_edit_name)).setText(project.name);
             ((EditText) findViewById(R.id.project_edit_start_date)).setText(DateUtils.dateToString(project.startDate));
             ((EditText) findViewById(R.id.project_edit_end_date)).setText(DateUtils.dateToString(project.endDate));
             ((EditText) findViewById(R.id.project_edit_details)).setText(MainActivity.formatEditItems(project.details));
+
+            findViewById(R.id.project_edit_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(KEY_PROJECT_ID, project.id);
+                    setResult(Activity.RESULT_OK, resultIntent);
+
+                    finish();
+                }
+            });
         }
     }
 
@@ -67,9 +84,9 @@ public class ProjectEditActivity extends AppCompatActivity {
         project.endDate = DateUtils.stringToDate((((EditText) findViewById(R.id.project_edit_end_date)).getText()).toString());
         project.details = Arrays.asList(TextUtils.split((((EditText) findViewById(R.id.project_edit_details)).getText()).toString(), "\n"));
         // save data
-        Intent ResultIntent = new Intent();
-        ResultIntent.putExtra(KEY_PROJECT, project);
-        setResult(Activity.RESULT_OK, ResultIntent);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(KEY_PROJECT, project);
+        setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
     }

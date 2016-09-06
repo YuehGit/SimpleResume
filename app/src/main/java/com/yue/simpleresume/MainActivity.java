@@ -1,5 +1,6 @@
 package com.yue.simpleresume;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQ_CODE_EDUCATION_EDIT = 100;
@@ -83,20 +85,73 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQ_CODE_EDUCATION_EDIT && resultCode == Activity.RESULT_OK) {
-            Education education = data.getParcelableExtra(EducationEditActivity.KEY_EDUCATION);
-            updateEducation(education);
-        }
 
-        if (requestCode == REQ_CODE_EXPERIENCE_EDIT && resultCode == Activity.RESULT_OK) {
-            Experience experience = data.getParcelableExtra(ExperienceEditActivity.KEY_EXPERIENCE);
-            updateExperience(experience);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQ_CODE_EDUCATION_EDIT:
+                    String educationID = data.getStringExtra(EducationEditActivity.KEY_EDUCATION_ID);
+                    if (educationID != null) {
+                        deleteEducation(educationID);
+                    } else {
+                        Education education = data.getParcelableExtra(EducationEditActivity.KEY_EDUCATION);
+                        updateEducation(education);
+                    }
+                    break;
+                case REQ_CODE_EXPERIENCE_EDIT:
+                    String experienceID = data.getStringExtra(ExperienceEditActivity.KEY_EXPERIENCE_ID);
+                    if (experienceID != null) {
+                        deleteExperience(experienceID);
+                    } else {
+                        Experience experience = data.getParcelableExtra(ExperienceEditActivity.KEY_EXPERIENCE);
+                        updateExperience(experience);
+                    }
+                    break;
+                case REQ_CODE_PROJECT_EDIT:
+                    String projectID = data.getStringExtra(ProjectEditActivity.KEY_PROJECT_ID);
+                    if (projectID != null) {
+                        deleteProject(projectID);
+                    } else {
+                        Project project = data.getParcelableExtra(ProjectEditActivity.KEY_PROJECT);
+                        updateProject(project);
+                    }
+            }
         }
+    }
 
-        if (requestCode == REQ_CODE_PROJECT_EDIT && resultCode == Activity.RESULT_OK) {
-            Project project = data.getParcelableExtra(ProjectEditActivity.KEY_PROJECT);
-            updateProject(project);
+    private void deleteProject(String projectID) {
+        for (int i = 0; i < projects.size(); i++) {
+            Project p = projects.get(i);
+            if (TextUtils.equals(p.id, projectID)) {
+                projects.remove(i);
+                break;
+            }
         }
+        ModelUtils.save(this, MODEL_PROJECTS, projects);
+        setupProjects();
+    }
+
+    private void deleteExperience(String experienceID) {
+        for (int i = 0; i < experiences.size(); i++) {
+            Experience e = experiences.get(i);
+            if (TextUtils.equals(e.id, experienceID)) {
+                experiences.remove(i);
+                break;
+            }
+        }
+        ModelUtils.save(this, MODEL_EXPERIENCES, experiences);
+        setupExperiences();
+    }
+
+    private void deleteEducation(String educationID) {
+        for (int i = 0; i < educations.size(); i++) {
+            Education e = educations.get(i);
+            if (TextUtils.equals(e.id, educationID)) {
+                educations.remove(i);
+                break;
+            }
+        }
+        ModelUtils.save(this, MODEL_EDUCATIONS, educations);
+        setupEducations();
     }
 
     private void updateProject(Project p) {

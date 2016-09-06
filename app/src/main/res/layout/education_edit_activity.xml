@@ -46,4 +46,13 @@
         android:layout_height="wrap_content"
         android:hint="Courses"/>
 
+    <TextView
+        android:id="@+id/education_edit_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/delete"
+        style="@style/DeleteButton" />
+
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.yue.simpleresume.models.Experience;
@@ -15,9 +16,12 @@ import com.yue.simpleresume.utils.DateUtils;
 
 import java.util.Arrays;
 
+@SuppressWarnings("ConstantConditions")
 public class ExperienceEditActivity extends AppCompatActivity {
 
     public static final String KEY_EXPERIENCE = "experience";
+
+    public static final String KEY_EXPERIENCE_ID = "experience_id";
 
     private Experience experience;
 
@@ -30,12 +34,27 @@ public class ExperienceEditActivity extends AppCompatActivity {
 
         experience = getIntent().getParcelableExtra(KEY_EXPERIENCE);
 
-        if (experience != null) {
+        if (experience == null) {         // add (create) operation -> hide the delete button
+            findViewById(R.id.experience_edit_delete).setVisibility(View.GONE);
+        } else {                           // edit operation -> setOnClickListener for delete button
             ((EditText) findViewById(R.id.experience_edit_company)).setText(experience.company);
             ((EditText) findViewById(R.id.experience_edit_title)).setText(experience.title);
             ((EditText) findViewById(R.id.experience_edit_start_date)).setText(DateUtils.dateToString(experience.startDate));
             ((EditText) findViewById(R.id.experience_edit_end_date)).setText(DateUtils.dateToString(experience.endDate));
             ((EditText) findViewById(R.id.experience_edit_details)).setText(MainActivity.formatEditItems(experience.details));
+
+            findViewById(R.id.experience_edit_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(KEY_EXPERIENCE_ID, experience.id);
+                    setResult(MainActivity.RESULT_OK, resultIntent);
+
+                    finish();
+                }
+            });
+
 
         }
 
