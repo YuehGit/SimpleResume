@@ -34,7 +34,7 @@
                     tools:text="John Doe"/>
 
                 <ImageButton
-                    android:id="@+id/info_edit"
+                    android:id="@+id/info_edit_btn"
                     android:layout_width="@dimen/icon_button_size"
                     android:layout_height="@dimen/icon_button_size"
                     android:layout_marginLeft="@dimen/spacing_xsmall"

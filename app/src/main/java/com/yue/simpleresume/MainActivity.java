@@ -28,10 +28,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQ_CODE_EDUCATION_EDIT = 100;
     public static final int REQ_CODE_EXPERIENCE_EDIT = 101;
     public static final int REQ_CODE_PROJECT_EDIT = 102;
+    private static final int REQ_CODE_INFO_EDIT = 103;
 
     private static final String MODEL_EDUCATIONS = "educations";
     private static final String MODEL_EXPERIENCES = "experience";
     private static final String MODEL_PROJECTS = "projects";
+    private static final String  MODEL_INFO = "information";
+
 
     private BasicInfo basicInfo;
     private List<Education> educations;
@@ -42,12 +45,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fakeData();
+        loadData();
         setupUI();
     }
 
     private void setupUI() {
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.info_edit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InfoEditActivity.class);
+                intent.putExtra(InfoEditActivity.KEY_INFO, basicInfo);
+                startActivityForResult(intent, REQ_CODE_INFO_EDIT);
+            }
+        });
 
         findViewById(R.id.add_education_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fakeData();
-        loadData();
-
         setupBasicInfo();
         setupEducations();
         setupExperiences();
@@ -88,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
+                case REQ_CODE_INFO_EDIT:
+                    basicInfo = data.getParcelableExtra(InfoEditActivity.KEY_INFO);
+                    updateBasicInfo(basicInfo);
+                    break;
                 case REQ_CODE_EDUCATION_EDIT:
                     String educationID = data.getStringExtra(EducationEditActivity.KEY_EDUCATION_ID);
                     if (educationID != null) {
@@ -117,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void deleteProject(String projectID) {
         for (int i = 0; i < projects.size(); i++) {
@@ -152,6 +167,13 @@ public class MainActivity extends AppCompatActivity {
         }
         ModelUtils.save(this, MODEL_EDUCATIONS, educations);
         setupEducations();
+    }
+
+    private void updateBasicInfo(BasicInfo basicInfo) {
+
+        ModelUtils.save(this, MODEL_INFO, basicInfo);
+        this.basicInfo = basicInfo;
+        setupBasicInfo();
     }
 
     private void updateProject(Project p) {
@@ -208,8 +230,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBasicInfo() {
-        ((TextView) findViewById(R.id.info_name)).setText(basicInfo.name);
-        ((TextView) findViewById(R.id.info_email)).setText(basicInfo.email);
+        ((TextView) findViewById(R.id.info_name)).setText(TextUtils.isEmpty(basicInfo.name)
+                                                                    ? "Your Name"
+                                                                    : basicInfo.name);
+        ((TextView) findViewById(R.id.info_email)).setText(TextUtils.isEmpty(basicInfo.email)
+                                                                    ? "Your Email"
+                                                                    : basicInfo.email);
     }
 
     private void setupEducations() {
@@ -274,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
-
     private void setupProjects() {
         LinearLayout projectsLayout = (LinearLayout) findViewById(R.id.projects);
         projectsLayout.removeAllViews();
@@ -306,90 +331,6 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
-    private void fakeData() {
-        basicInfo = new BasicInfo();
-        basicInfo.name = "John Doe";
-        basicInfo.email = "Doe.John@gmail.com";
-
-//        Education education1 = new Education();
-//        education1.school = "UCSD";
-//        education1.major = "Electrical Engineering";
-//        education1.startDate = DateUtils.stringToDate("09/2011");
-//        education1.endDate = DateUtils.stringToDate("09/2012");
-//
-//        education1.courses = new ArrayList<>();
-//        education1.courses.add("Wireless Network");
-//        education1.courses.add("Communication Theory");
-//        education1.courses.add("Mobile Security");
-//        education1.courses.add("Signal Processing");
-//
-//        Education education2 = new Education();
-//        education2.school = "UCLA";
-//        education2.major = "Computer Science";
-//        education2.startDate = DateUtils.stringToDate("01/2013");
-//        education2.endDate = DateUtils.stringToDate("09/2014");
-//
-//        education2.courses = new ArrayList<>();
-//        education2.courses.add("Database");
-//        education2.courses.add("Algorithm");
-//        education2.courses.add("OO Design");
-//        education2.courses.add("Operating System");
-//
-//        educations = new ArrayList<>();
-//        educations.add(education1);
-//        educations.add(education2);
-//
-//        Experience experience1 = new Experience();
-//        experience1.company = "Google";
-//        experience1.title = "Software Engineer";
-//        experience1.startDate = DateUtils.stringToDate("11/2014");
-//        experience1.endDate = DateUtils.stringToDate("06/2015");
-//
-//        experience1.details = new ArrayList<>();
-//        experience1.details.add("Built something using some tech");
-//        experience1.details.add("Built something using some tech");
-//        experience1.details.add("Built something using some tech");
-//
-//        Experience experience2 = new Experience();
-//        experience2.company = "Facebook";
-//        experience2.title = "Software Engineer";
-//        experience2.startDate = DateUtils.stringToDate("08/2015");
-//        experience2.endDate = DateUtils.stringToDate("09/2016");
-//
-//        experience2.details = new ArrayList<>();
-//        experience2.details.add("Built something using some tech");
-//        experience2.details.add("Built something using some tech");
-//        experience2.details.add("Built something using some tech");
-//
-//        experiences = new ArrayList<>();
-//        experiences.add(experience1);
-//        experiences.add(experience2);
-//
-//        Project project1 = new Project();
-//        project1.name = "SimpleResume";
-//        project1.startDate = DateUtils.stringToDate("12/2014");
-//        project1.endDate = DateUtils.stringToDate("01/2015");
-//
-//        project1.details = new ArrayList<>();
-//        project1.details.add("Complete something using some tech");
-//        project1.details.add("Complete something using some tech");
-//        project1.details.add("Complete something using some tech");
-//
-//        Project project2 = new Project();
-//        project2.name = "SimpleTodo";
-//        project2.startDate = DateUtils.stringToDate("06/2015");
-//        project2.endDate = DateUtils.stringToDate("09/2015");
-//
-//        project2.details = new ArrayList<>();
-//        project2.details.add("Complete something using some tech");
-//        project2.details.add("Complete something using some tech");
-//        project2.details.add("Complete something using some tech");
-//
-//        projects = new ArrayList<>();
-//        projects.add(project1);
-//        projects.add(project2);
-    }
-
     public static String formatItems(List<String> items) {
 
         StringBuilder sb = new StringBuilder();
@@ -417,6 +358,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
+        BasicInfo savedBasicInfo = ModelUtils.read (this,
+                                                    MODEL_INFO,
+                                                    new TypeToken<BasicInfo>(){});
+        basicInfo = savedBasicInfo == null ? new BasicInfo() : savedBasicInfo;
+
         List<Education> savedEducation = ModelUtils.read (this,
                                                          MODEL_EDUCATIONS,
                                                          new TypeToken<List<Education>>(){});
