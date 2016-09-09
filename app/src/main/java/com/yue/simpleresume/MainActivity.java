@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.yue.simpleresume.models.Education;
 import com.yue.simpleresume.models.Experience;
 import com.yue.simpleresume.models.Project;
 import com.yue.simpleresume.utils.DateUtils;
+import com.yue.simpleresume.utils.ImageUtils;
 import com.yue.simpleresume.utils.ModelUtils;
 
 import java.util.ArrayList;
@@ -131,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void deleteProject(String projectID) {
         for (int i = 0; i < projects.size(); i++) {
             Project p = projects.get(i);
@@ -236,6 +236,15 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.info_email)).setText(TextUtils.isEmpty(basicInfo.email)
                                                                     ? "Your Email"
                                                                     : basicInfo.email);
+
+        ImageView imageView = (ImageView) findViewById(R.id.info_portrait);
+
+        if (!TextUtils.isEmpty(basicInfo.imagePath)) {
+            ImageUtils.loadImage(basicInfo.imagePath, imageView);
+        } else {
+            imageView.setImageResource(R.drawable.user_default);
+        }
+
     }
 
     private void setupEducations() {

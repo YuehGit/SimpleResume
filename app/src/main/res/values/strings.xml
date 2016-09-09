@@ -14,4 +14,8 @@
     <string name="add_projects">Add projects</string>
     <string name="save">save</string>
     <string name="delete">Delete</string>
+    <string name="choose_user_picture">Choose user picture</string>
+    <string name="user_picture">User picture</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
 </resources>

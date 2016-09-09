@@ -10,12 +10,15 @@ public class BasicInfo implements Parcelable{
 
     public String email;
 
+    public String imagePath;
+
     public BasicInfo() {
     }
 
     protected BasicInfo(Parcel in) {
         name = in.readString();
         email = in.readString();
+        imagePath = in.readString();
     }
 
     public static final Creator<BasicInfo> CREATOR = new Creator<BasicInfo>() {
@@ -39,6 +42,7 @@ public class BasicInfo implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(email);
+        dest.writeString(imagePath);
     }
 
     // TODO image
